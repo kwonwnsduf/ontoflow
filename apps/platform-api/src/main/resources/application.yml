@@ -1,0 +1,40 @@
+spring:
+  application:
+    name: platform-api
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/ontoflow}
+    username: ${DB_USERNAME:ontoflow}
+    password: ${DB_PASSWORD:}
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:}
+  flyway:
+    enabled: true
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: never
+      probes:
+        enabled: true
+springdoc:
+  swagger-ui:
+    path: /docs
+ontoflow:
+  security:
+    internal-api-key: ${INTERNAL_API_KEY:}
+server:
+  shutdown: graceful
+logging:
+  structured:
+    format:
+      console: logstash

@@ -1,0 +1,17 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:ontoflow;MODE=PostgreSQL;DB_CLOSE_DELAY=-1
+    username: sa
+    password: ""
+  data:
+    redis:
+      repositories:
+        enabled: false
+  flyway:
+    enabled: false
+  jpa:
+    hibernate:
+      ddl-auto: none
+ontoflow:
+  security:
+    internal-api-key: test-key-that-is-at-least-32-characters

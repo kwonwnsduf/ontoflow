@@ -1,0 +1,23 @@
+:root { --ink:#14211b; --muted:#627068; --line:#dce4df; --green:#0a7b50; --lime:#c7ef9a; --paper:#f5f7f3; }
+* { box-sizing:border-box; }
+html,body { margin:0; min-height:100%; background:var(--paper); color:var(--ink); font-family:Arial,"Noto Sans KR",sans-serif; }
+body { background-image:radial-gradient(#ccd6cf 0.7px,transparent 0.7px); background-size:22px 22px; }
+main { max-width:1180px; min-height:100vh; margin:auto; padding:0 38px; display:flex; flex-direction:column; }
+nav { height:86px; display:flex; align-items:center; gap:13px; border-bottom:1px solid var(--line); letter-spacing:-.02em; }
+.mark { display:grid; place-items:center; width:35px; height:35px; color:white; background:var(--green); border-radius:9px; font-size:12px; font-weight:800; }
+.phase { margin-left:auto; border:1px solid var(--line); border-radius:99px; padding:7px 12px; color:var(--muted); font:600 11px monospace; }
+.hero { padding:92px 0 76px; max-width:840px; }
+.eyebrow { color:var(--green); font:700 12px monospace; letter-spacing:.16em; }
+h1 { margin:22px 0 28px; font-size:clamp(48px,7vw,84px); line-height:1.04; letter-spacing:-.065em; font-weight:650; }
+h1 em { color:var(--green); font-style:normal; }
+.intro { max-width:650px; font-size:19px; line-height:1.75; color:var(--muted); word-break:keep-all; }
+.status { margin-top:34px; display:inline-flex; align-items:center; gap:9px; padding:10px 14px; background:#e7efe9; color:#345445; border-radius:7px; font:600 12px monospace; }
+.status i { width:8px; height:8px; background:#20a96b; border-radius:50%; box-shadow:0 0 0 4px #c9e7d7; }
+.services { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
+article { padding:24px; border:1px solid var(--line); background:rgba(255,255,255,.72); border-radius:12px; }
+article span { color:var(--green); font:700 10px monospace; letter-spacing:.1em; }
+article h2 { margin:18px 0 7px; font-size:17px; }
+article p { margin:0; color:var(--muted); font:12px monospace; }
+footer { margin-top:auto; padding:48px 0 30px; color:#89958e; font:11px monospace; }
+@media (max-width:720px) { main{padding:0 22px}.hero{padding:64px 0 48px}.services{grid-template-columns:1fr}h1{font-size:48px} }
+
