@@ -24,7 +24,12 @@ services:
 
   redis:
     image: redis:8.2-alpine
-    command: ["sh", "-c", 'exec redis-server --requirepass "$$REDIS_PASSWORD"']
+    command:
+      [
+        "sh",
+        "-c",
+        'exec redis-server --appendonly yes --maxmemory-policy noeviction --requirepass "$$REDIS_PASSWORD"',
+      ]
     environment:
       REDIS_PASSWORD: ${REDIS_PASSWORD:?Set REDIS_PASSWORD in .env}
     ports: ["6379:6379"]
@@ -86,6 +91,9 @@ services:
     build: ./apps/platform-api
     environment:
       SPRING_PROFILES_ACTIVE: local
+      JWT_SECRET: ${JWT_SECRET:?Set JWT_SECRET in .env}
+      WEB_ORIGIN: ${WEB_ORIGIN:-http://localhost:3000}
+      AUTH_COOKIE_SECURE: ${AUTH_COOKIE_SECURE:-true}
       DB_URL: jdbc:postgresql://postgres:5432/${POSTGRES_DB}
       DB_USERNAME: ${POSTGRES_USER}
       DB_PASSWORD: ${POSTGRES_PASSWORD}
@@ -172,6 +180,11 @@ services:
       context: ./apps/platform-api
       target: build
     command: ["gradle", "test", "--no-daemon"]
+    environment:
+      REDIS_HOST: redis
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
+    depends_on:
+      redis: { condition: service_healthy }
     profiles: ["test"]
 
   ai-service-test:

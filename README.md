@@ -1,8 +1,8 @@
 # OntoFlow AI
 
 Ontology-driven multi-agent enterprise automation platform. Phase 1 provides a
-fully containerized, tested development foundation without introducing business
-features assigned to later phases.
+containerized development foundation. Phase 2 adds JWT authentication, rotating
+refresh sessions, isolated workspaces, member roles and audit events.
 
 ## Prerequisites
 
@@ -14,6 +14,7 @@ features assigned to later phases.
 ```powershell
 Copy-Item .env.example .env
 # Replace every change-me value in .env before starting.
+# JWT_SECRET must be a random secret of at least 32 bytes.
 docker compose up --build
 ```
 
@@ -59,5 +60,27 @@ compose.yaml          Local runtime and test runners
 ```
 
 See [architecture](docs/ARCHITECTURE.md), [API contracts](docs/API_CONTRACTS.md),
-and the [Phase 1 report](docs/phases/PHASE_01.md).
+and the [Phase 2 report](docs/phases/PHASE_02.md).
+
+## Use workspaces
+
+Open `/register`, create an account, then create a workspace at `/workspaces`.
+Register another account before adding it as a workspace member by email.
+OWNER and ADMIN manage members; only OWNER can grant or modify ADMIN/OWNER.
+The final OWNER cannot be removed or demoted. OPERATOR and VIEWER can open
+their workspace but cannot manage members or read audit logs.
+
+The browser keeps only the 15-minute access token in memory. A host-only HttpOnly
+refresh cookie restores login after reload and rotates on use, with an absolute
+seven-day login lifetime. Cookie-based auth mutations require a CSRF token.
+Redis shares login rate limits and validates each access token's login family;
+logout/replay immediately blocks further access for that family. PostgreSQL
+retains refresh-token hashes and audit records. Redis outages return 503 rather
+than bypassing authentication. Every workspace request checks current membership.
+
+Local HTTP uses `AUTH_COOKIE_SECURE=false` in `.env.example`. Production requires
+`AUTH_COOKIE_SECURE=true`, an exact HTTPS `WEB_ORIGIN`, and HTTPS for the API.
+Web/API must be on the same site for SameSite=Strict cookies. Existing `.env`
+files need the local cookie setting added explicitly. See
+[authentication deployment and behavior](docs/AUTH_SECURITY.md).
 

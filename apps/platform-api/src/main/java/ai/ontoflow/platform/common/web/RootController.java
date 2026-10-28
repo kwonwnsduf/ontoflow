@@ -1,8 +1,9 @@
-package ai.ontoflow.platform.web;
+package ai.ontoflow.platform.common.web;
 
-import java.util.Map;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Map;
 
 @RestController
 public class RootController {
@@ -11,4 +12,3 @@ public class RootController {
         return Map.of("service", "platform-api", "status", "ready");
     }
 }
-

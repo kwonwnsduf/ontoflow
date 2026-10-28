@@ -1,4 +1,21 @@
 :root { --ink:#14211b; --muted:#627068; --line:#dce4df; --green:#0a7b50; --lime:#c7ef9a; --paper:#f5f7f3; }
+a { color:var(--green); text-decoration:none; }
+button,input,select { font:inherit; border-radius:7px; padding:11px 14px; border:1px solid var(--line); }
+button { background:var(--green); color:white; cursor:pointer; }
+button:disabled { opacity:.5; cursor:default; }
+input,select { background:white; color:var(--ink); min-width:0; }
+input:focus,select:focus,button:focus-visible,a:focus-visible { outline:2px solid var(--green); outline-offset:3px; }
+form { display:grid; gap:18px; }
+label { display:grid; gap:8px; font-size:14px; }
+.auth-card { width:100%; max-width:480px; margin:50px auto; padding:32px; background:white; border:1px solid var(--line); border-radius:14px; }
+.auth-card h1 { font-size:36px; line-height:1.2; letter-spacing:-.04em; }
+.auth-card p { line-height:1.6; }
+.workspace-section { padding:54px 0; }
+.workspace-section h1 { font-size:48px; }
+.actions { display:flex; align-items:center; gap:12px; margin-top:18px; flex-wrap:wrap; }
+.member-list { display:grid; gap:12px; }
+[role=alert] { color:#b42727; overflow-wrap:anywhere; }
+.services button { margin-top:20px; }
 * { box-sizing:border-box; }
 html,body { margin:0; min-height:100%; background:var(--paper); color:var(--ink); font-family:Arial,"Noto Sans KR",sans-serif; }
 body { background-image:radial-gradient(#ccd6cf 0.7px,transparent 0.7px); background-size:22px 22px; }

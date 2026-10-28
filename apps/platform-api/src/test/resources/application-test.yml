@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:h2:mem:ontoflow;MODE=PostgreSQL;DB_CLOSE_DELAY=-1
+    url: jdbc:h2:mem:ontoflow;MODE=PostgreSQL;DB_CLOSE_DELAY=-1;INIT=CREATE DOMAIN IF NOT EXISTS TIMESTAMPTZ AS TIMESTAMP WITH TIME ZONE
     username: sa
     password: ""
   data:
@@ -8,10 +8,17 @@ spring:
       repositories:
         enabled: false
   flyway:
-    enabled: false
+    enabled: true
   jpa:
     hibernate:
-      ddl-auto: none
+      ddl-auto: validate
 ontoflow:
+  auth:
+    jwt-secret: test-jwt-secret-at-least-32-bytes-long
+    cookie-secure: false
+    login-ip-limit: 10000
+    login-account-limit: 10000
+    register-ip-limit: 10000
+    refresh-ip-limit: 10000
   security:
     internal-api-key: test-key-that-is-at-least-32-characters

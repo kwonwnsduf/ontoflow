@@ -14,6 +14,8 @@ spring:
       host: ${REDIS_HOST:localhost}
       port: ${REDIS_PORT:6379}
       password: ${REDIS_PASSWORD:}
+      connect-timeout: 1s
+      timeout: 1s
   flyway:
     enabled: true
 management:
@@ -30,9 +32,14 @@ springdoc:
   swagger-ui:
     path: /docs
 ontoflow:
+  auth:
+    jwt-secret: ${JWT_SECRET}
+    web-origin: ${WEB_ORIGIN:http://localhost:3000}
+    cookie-secure: ${AUTH_COOKIE_SECURE:true}
   security:
     internal-api-key: ${INTERNAL_API_KEY:}
 server:
+  forward-headers-strategy: none
   shutdown: graceful
 logging:
   structured:
