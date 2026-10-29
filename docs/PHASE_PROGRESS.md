@@ -4,5 +4,6 @@
 |---|---|---|
 | 1. 프로젝트 기반 구성 | 구현 완료 | `docs/phases/PHASE_01.md` |
 | 2. 인증과 워크스페이스 | 구현 완료. 검증 결과는 보고서에 기록 | `docs/phases/PHASE_02.md` |
-| 3~14 | 미착수 | 2단계 구현 범위에 포함하지 않음 |
+| 3. Mock 기업 시스템과 Connector Framework | 구현 완료. 검증 결과는 보고서에 기록 | `docs/phases/PHASE_03.md` |
+| 4~14 | 미착수 | 후속 단계 |
 

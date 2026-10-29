@@ -162,3 +162,17 @@ Redis와 PostgreSQL은 하나의 분산 트랜잭션이 아니다.
 CI는 실제 Redis와 H2·PostgreSQL을 사용하는 통합 테스트를 실행한다.
 상세 제한값과 운영 설정은 [인증 보안과 운영 설정](AUTH_SECURITY.md)을 참조한다.
 
+## 3단계 기업 커넥터
+
+Spring의 `ConnectorService`가 모든 요청에서 `TenantAccessService`로
+멤버십과 역할을 검증한다. 연결 레코드는 `tenant_id`로 범위를 제한한다.
+`MockEnterpriseAdapter`는 Alpha/Beta의 API를 공통 `EnterpriseAdapter`
+계약으로 변환한다. 외부 호출에는 2초 연결·요청 제한 시간을 적용한다.
+
+연결 설정은 PostgreSQL에 두고 Credential은 `SecretStore`로 암호화해
+별도 컬럼에 저장한다. 로컬 구현은 환경 변수의 키와 AES-256-GCM을
+사용하며, 운영에서는 같은 인터페이스를 Secrets Manager 구현으로 교체할 수 있다.
+Capability는 연결마다 활성 상태를 관리하며 비활성 기능은 서버에서 차단한다.
+Mock 시스템은 별도 서비스로 운영하고 Alpha/Beta의 Credential과 데이터가
+구분된다. 개발용 Mock 데이터는 프로세스 메모리에 있다.
+

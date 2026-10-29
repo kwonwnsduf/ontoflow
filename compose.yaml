@@ -101,6 +101,8 @@ services:
       REDIS_PORT: "6379"
       REDIS_PASSWORD: ${REDIS_PASSWORD}
       INTERNAL_API_KEY: ${PLATFORM_API_INTERNAL_KEY:?Set PLATFORM_API_INTERNAL_KEY in .env}
+      CONNECTOR_ENCRYPTION_KEY: ${CONNECTOR_ENCRYPTION_KEY:?Set CONNECTOR_ENCRYPTION_KEY in .env}
+      MOCK_ENTERPRISE_URL: http://mock-enterprise:8090
     ports: ["8080:8080"]
     depends_on:
       postgres: { condition: service_healthy }
@@ -163,6 +165,8 @@ services:
     build: ./apps/mock-enterprise
     environment:
       PORT: "8090"
+      ALPHA_MOCK_TOKEN: ${ALPHA_MOCK_TOKEN:?Set ALPHA_MOCK_TOKEN in .env}
+      BETA_MOCK_TOKEN: ${BETA_MOCK_TOKEN:?Set BETA_MOCK_TOKEN in .env}
     ports: ["8090:8090"]
     healthcheck:
       test:

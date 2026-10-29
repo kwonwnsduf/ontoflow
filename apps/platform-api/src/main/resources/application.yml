@@ -38,6 +38,9 @@ ontoflow:
     cookie-secure: ${AUTH_COOKIE_SECURE:true}
   security:
     internal-api-key: ${INTERNAL_API_KEY:}
+  connector:
+    encryption-key: ${CONNECTOR_ENCRYPTION_KEY}
+    mock-url: ${MOCK_ENTERPRISE_URL:http://localhost:8090}
 server:
   forward-headers-strategy: none
   shutdown: graceful

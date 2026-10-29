@@ -100,6 +100,34 @@ OWNER만 OWNER·ADMIN 역할을 부여하거나 변경할 수 있다.
 모든 API 응답에는 `X-Trace-Id`와 `Cache-Control: no-store`가 포함된다.
 멤버·감사 기록 응답에는 토큰·해시·비밀값을 포함하지 않는다.
 
+## 3단계 커넥터 API
+
+모든 경로의 접두사는 `/api/v1/tenants/{tenant}/connectors`이다.
+`tenant`는 JWT의 사용자 멤버십으로 매 요청 검증한다. 연결 ID를 다른
+워크스페이스 경로에 넣으면 404를 반환한다. Credential은 등록 요청에만
+포함하고 응답·로그에는 포함하지 않는다.
+
+| 메서드 | 경로 | 기능 |
+|---|---|---|
+| GET | `/` | 워크스페이스 연결 목록과 Capability 조회 |
+| POST | `/` | `{systemType: ALPHA\|BETA, name, credential}` 등록·연결 테스트. OWNER·ADMIN |
+| GET | `/{id}` | 상태, 마지막 오류와 Capability 조회 |
+| POST | `/{id}/test` | 연결 재검사. OWNER·ADMIN |
+| PATCH | `/{id}/capabilities/{action}` | `{enabled}` 변경. OWNER·ADMIN |
+| DELETE | `/{id}` | 연결 해제. OWNER·ADMIN |
+| GET | `/{id}/payments/failed` | 공통 Payment DTO 목록 |
+| GET | `/{id}/payments/{paymentId}` | 공통 Payment DTO |
+| GET | `/{id}/customers/{customerId}` | 공통 Customer DTO |
+| GET | `/{id}/employees` | 공통 Employee DTO |
+| POST | `/{id}/followups` | `{customerId,assigneeId,summary}` 생성. OWNER·ADMIN |
+| POST | `/{id}/drafts` | `{to,subject,content}` 생성. OWNER·ADMIN |
+
+Capability: `payment.list_failed`, `payment.get_detail`,
+`crm.find_customer`, `crm.list_employees`, `crm.create_followup`,
+`email.create_draft`. Beta의 `DECLINED`는 공통 `FAILED`,
+`SETTLED`는 `PAID`로 변환한다. 외부 Credential 오류와 기타
+기업 API 오류는 502, Timeout은 504를 반환한다.
+
 ### 토큰 만료와 폐기
 
 접근 토큰의 기본 유효기간은 15분이며 검증 시 60초의 시계 오차를 허용한다.

@@ -2,7 +2,8 @@
 
 Ontology-driven multi-agent enterprise automation platform. Phase 1 provides a
 containerized development foundation. Phase 2 adds JWT authentication, rotating
-refresh sessions, isolated workspaces, member roles and audit events.
+refresh sessions, isolated workspaces, member roles and audit events. Phase 3
+adds Alpha/Beta mock enterprise systems and tenant-scoped connectors.
 
 ## Prerequisites
 
@@ -60,7 +61,22 @@ compose.yaml          Local runtime and test runners
 ```
 
 See [architecture](docs/ARCHITECTURE.md), [API contracts](docs/API_CONTRACTS.md),
-and the [Phase 2 report](docs/phases/PHASE_02.md).
+and the [Phase 3 report](docs/phases/PHASE_03.md).
+
+## Connect enterprise systems
+
+Open a workspace and choose **연결 시스템**. OWNER or ADMIN can add Alpha or
+Beta using the corresponding `ALPHA_MOCK_TOKEN` or `BETA_MOCK_TOKEN` from
+the local `.env`. The API verifies the credential before storing it. The
+workspace page shows connection status, available capabilities and normalized
+failed payments. Other members can read connected system data; only OWNER and
+ADMIN can change connections and capabilities.
+
+Set a unique random `CONNECTOR_ENCRYPTION_KEY` of at least 32 characters in
+`.env`. The local secret store encrypts credentials using AES-256-GCM before
+writing them to PostgreSQL. Losing or changing this key makes saved credentials
+unreadable. Production can replace the `SecretStore` implementation with
+Secrets Manager.
 
 ## Use workspaces
 

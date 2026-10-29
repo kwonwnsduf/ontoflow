@@ -39,6 +39,7 @@ export default function DashboardLayout({
       <nav>
         <strong>OntoFlow AI</strong>
         <Link href="/workspaces">Workspace 전환</Link>
+        <Link href={`/dashboard/${tenant}/connectors`}>연결 시스템</Link>
         <button
           className="phase"
           onClick={async () => {

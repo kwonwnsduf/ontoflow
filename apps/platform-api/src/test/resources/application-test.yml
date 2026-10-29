@@ -22,3 +22,5 @@ ontoflow:
     refresh-ip-limit: 10000
   security:
     internal-api-key: test-key-that-is-at-least-32-characters
+  connector:
+    encryption-key: test-connector-key-at-least-32-characters-long

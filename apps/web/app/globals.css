@@ -14,6 +14,8 @@ label { display:grid; gap:8px; font-size:14px; }
 .workspace-section h1 { font-size:48px; }
 .actions { display:flex; align-items:center; gap:12px; margin-top:18px; flex-wrap:wrap; }
 .member-list { display:grid; gap:12px; }
+.capability { display:flex; align-items:center; gap:8px; }
+.capability input { width:18px; height:18px; }
 [role=alert] { color:#b42727; overflow-wrap:anywhere; }
 .services button { margin-top:20px; }
 * { box-sizing:border-box; }
