@@ -88,6 +88,8 @@ public class SecurityConfig {
                                     "/v3/api-docs/**")
                             .permitAll();
                     authorize.requestMatchers(HttpMethod.GET, "/api/v1/auth/csrf").permitAll();
+                    authorize.requestMatchers(HttpMethod.GET, "/api/v1/sources/slack/callback").permitAll();
+                    authorize.requestMatchers(HttpMethod.GET, "/api/v1/sources/github/callback").permitAll();
                     authorize
                             .requestMatchers(
                                     HttpMethod.POST,

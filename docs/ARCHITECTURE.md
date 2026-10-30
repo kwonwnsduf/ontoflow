@@ -176,3 +176,9 @@ Capability는 연결마다 활성 상태를 관리하며 비활성 기능은 서
 Mock 시스템은 별도 서비스로 운영하고 Alpha/Beta의 Credential과 데이터가
 구분된다. 개발용 Mock 데이터는 프로세스 메모리에 있다.
 
+## 4단계 외부 데이터 원천
+
+`SourceCatalog`의 서버 설정이 Tenant별 리소스 키를 허용한다. DB View 이름과 JDBC URL, GitHub Repository, Slack 채널 ID는 클라이언트 입력에서 가져오지 않는다. `SourceReader`는 파라미터화된 고정 View 조회, GitHub App 설치 토큰 조회, Slack OAuth Bot의 채널 멤버십 검사만 수행한다. 이 경로에는 원본 쓰기 API가 없다.
+
+연결 메타데이터는 `connectors`, 별도 AES-GCM 암호문은 `connector_credentials`에 저장한다. 연결의 `credential_ciphertext`에는 참조 ID만 둔다. `source_sync_state`는 페이지 Cursor와 스캔 시작 시각을 유지한다. `source_records`와 `source_events`는 Tenant ID와 원천 ID를 담고, 삭제·권한 회수·연결 해제 시 본문을 비우고 DELETE 이벤트를 기록한다. Phase 7과 10은 이 이벤트를 읽어 투영과 검색 인덱스를 정리해야 한다.
+

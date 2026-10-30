@@ -80,6 +80,9 @@ public class ConnectorService {
         access.requireAdministrator(user, tenant);
         String type = request.systemType().toUpperCase(java.util.Locale.ROOT);
         EnterpriseAdapter adapter = adapters.forType(type);
+        if (db.queryForObject("SELECT count(*) FROM connectors WHERE tenant_id=? AND system_type=? AND resource_key IS NULL",
+                Integer.class, tenant, type) > 0)
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "System already connected");
         if (request.credential().length() > 512 || request.credential().isBlank())
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid credential");
         // Reject bad credentials before persisting any connection.

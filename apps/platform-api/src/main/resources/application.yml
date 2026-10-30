@@ -41,6 +41,18 @@ ontoflow:
   connector:
     encryption-key: ${CONNECTOR_ENCRYPTION_KEY}
     mock-url: ${MOCK_ENTERPRISE_URL:http://localhost:8090}
+    require-tls: ${SOURCE_REQUIRE_TLS:true}
+    github:
+      app-id: ${GITHUB_APP_ID:}
+      private-key-base64: ${GITHUB_APP_PRIVATE_KEY_BASE64:}
+      client-id: ${GITHUB_CLIENT_ID:}
+      client-secret: ${GITHUB_CLIENT_SECRET:}
+      redirect-uri: ${GITHUB_REDIRECT_URI:}
+      app-slug: ${GITHUB_APP_SLUG:}
+    slack:
+      client-id: ${SLACK_CLIENT_ID:}
+      client-secret: ${SLACK_CLIENT_SECRET:}
+      redirect-uri: ${SLACK_REDIRECT_URI:}
 server:
   forward-headers-strategy: none
   shutdown: graceful

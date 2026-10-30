@@ -142,3 +142,31 @@ Redis 데이터 유실 후에도 유효한 갱신 쿠키가 있으면 상태를 
 폐기·만료된 토큰으로는 복원할 수 없다. Redis 장애 시에는 인증 검증을 생략하지 않고 503을 반환한다.
 로그아웃 당시 이미 실행 중이던 업무 요청까지 되돌리지는 않는다.
 
+## Phase 4 데이터 원천 API
+
+기본 경로: `/api/v1/tenants/{tenant}/sources`. 모든 요청은 Bearer 인증과 서버 측 Tenant 멤버십 확인을 거친다. 변경 요청은 OWNER 또는 ADMIN만 허용한다.
+
+| 메서드 | 경로 | 기능 |
+|---|---|---|
+| GET | `/registry` | 원천 타입, 인증 방식, READ Capability 및 입출력 계약 |
+| GET | `/available` | 서버 설정에서 이 Tenant에 허용된 리소스 키 |
+| GET | `/` | 연결 상태, 오류, 마지막 확인·동기화 시각 |
+| POST | `/` | `{type,name,resourceKey,credential}`. PostgreSQL/MySQL의 `credential`은 `username/password` JSON. 연결 검사를 통과해야 저장 |
+| GET | `/{id}` | Tenant 범위의 연결 상세 |
+| POST | `/{id}/test` | 원본 권한 재검사 |
+| PATCH | `/{id}/credential` | `{credential}`로 DB/GitHub Credential 교체 후 재검사 |
+| PATCH | `/{id}/capability` | `{enabled}`로 읽기 허용 변경 |
+| GET | `/{id}/read?cursor=&limit=` | 원본 페이지 조회. 최대 100개 |
+| POST | `/{id}/sync` | 체크포인트에서 동기화 재개. 응답 `{processed}` |
+| GET | `/{id}/records?limit=` | 활성 원본과 출처 메타데이터. 최대 100개 |
+| GET | `/{id}/provenance?limit=` | 삭제 상태를 포함한 출처 메타데이터. 비활성·해제 연결은 본문 비노출 |
+| DELETE | `/{id}` | Credential 삭제, 읽기 차단, 수집 본문 비노출 |
+| POST | `/slack/authorize` | `{name,resourceKey}`. OAuth 동의 URL 반환 |
+| GET | `/github/install-url` | 관리자에게 GitHub App 설치 URL 반환 |
+| POST | `/github/authorize` | `{name,resourceKey,installationId}`. 사용자 OAuth 동의 URL 반환 |
+
+Slack OAuth 콜백은 `GET /api/v1/sources/slack/callback?state=&code=`이다. 단일 사용 state와 10분 만료를 검증하고 연결 후 웹 데이터 원천 화면으로 리다이렉트한다. 응답에 Credential을 포함하지 않는다.
+GitHub 콜백은 `GET /api/v1/sources/github/callback?state=&code=`이다. 사용자 토큰으로 해당 설치의 Repository 접근을 검증한 뒤 토큰을 폐기하고 App 설치 ID만 암호화해 저장한다. 설치 ID만으로 연결하는 경로는 제공하지 않는다.
+
+`source_records`는 원본 ID/URL, 원본 갱신·수집 시각, 권한 범위, SHA-256 체크섬, 삭제 상태와 본문을 저장한다. `source_events`는 CREATE/UPDATE/DELETE를 Phase 7 및 10의 투영·인덱스가 소비할 계약으로 제공한다. 이 단계의 API는 임의 SQL/URL/채널 ID를 받지 않는다.
+

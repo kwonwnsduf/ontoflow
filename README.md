@@ -100,3 +100,7 @@ Web/API must be on the same site for SameSite=Strict cookies. Existing `.env`
 files need the local cookie setting added explicitly. See
 [authentication deployment and behavior](docs/AUTH_SECURITY.md).
 
+## Phase 4 external sources
+
+Workspace administrators can open **데이터 원천** to connect server-approved read-only DB views, GitHub App installations, or Slack channels. Configure allowed resource keys and provider credentials first; the setup and API contract are in [Phase 4 report](docs/phases/PHASE_04.md). Existing Alpha/Beta Mock connections remain under **연결 시스템**.
+
